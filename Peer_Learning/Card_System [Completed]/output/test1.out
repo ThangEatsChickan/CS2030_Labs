@@ -1,0 +1,26 @@
+|  Welcome to JShell -- Version 11.0.4
+|  For an introduction type: /help intro
+
+jshell> Card a = new Card();
+a ==> 
+Card Balance: 0.00
+
+jshell> Card c = new Card(1, 10);
+c ==> 
+Card Balance: 10.00
+
+jshell> a.getValue();
+$4 ==> 0.0
+
+jshell> a.getCardID();
+$5 ==> 0
+
+jshell> c.getValue();
+$6 ==> 10.0
+
+jshell> c.getCardID();
+$7 ==> 1
+
+jshell> 
+
+jshell> 

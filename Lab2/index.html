@@ -1,0 +1,381 @@
+<h3>Cruise Loaders</h3>
+
+<p>
+  <b>Topic Coverage</b>
+</p>
+<ul>
+  <li>Inheritance
+  </li>
+  <li>Polymorphism
+  </li>
+  <li>Method overriding
+  </li>
+  <li><a href="https://www.comp.nus.edu.sg/~cs2030/style">CS2030 Java Style Guide</a>
+</ul>
+
+<h3>Problem Description</h3>
+
+<p>
+  The Kent Ridge Cruise Centre just opened and
+  you are required to design a program to decide how many loaders 
+  to buy based on a single-day cruise schedule.
+</p>
+
+<h4>Loaders</h4>
+<p>
+  Loaders are used to serve cruises. From the time a cruise arrives, as many loaders as required will
+  serve this cruise. They will then continue to serve the cruise until the service has been completed
+  after a certain number of minutes.
+</p>
+<p>
+  While the loaders are in the midst of serving a cruise, they cannot serve another cruise up until
+  the current service has been completed.
+</p>
+<p>
+  For example, if an incoming cruise arrives at 12PM, requires two loaders, and 60 min for it to be
+  fully served, then,
+  <ul>
+    <li>
+      At 12PM, there must be two vacant loaders.
+    </li>
+    <li>
+      These two loaders will serve the cruise from 12PM - 1PM.
+    </li>
+    <li>
+      They can only serve another cruise from 1PM onwards.
+    </li>
+  </ul>
+</p>
+
+<!--
+<p>
+  Furthermore, as the Cruise Centre wants to go green, their policy states that
+  every third loader purchased must be a loader made from recycled materials 
+  (referred to as a RecycledLoader), which undergoes maintenance for
+  one hour after each service. The recycled loader is unable to serve a cruise 
+  during the maintenance period.
+</p>
+-->
+
+<h4>Cruises</h4>
+<p>
+  All cruises have two attributes: a unique identifier, and a time of arrival.
+</p>
+
+<p>
+  The unique identifier is a String, for example, <tt>A1234</tt>. The time of arrival comes in HHMM format, such as 2359,
+  denoting that the cruise has arrived at 11:59PM on that day.
+  
+</p>
+<p>
+  There can be up to 30 cruises that arrive in a day. Every cruise <b>must be served by loaders immediately upon arrival</b>.
+  There are two types of cruises:
+</p>
+<ul>
+  <li>Cruise:
+    <ul>
+      <li>Takes a fixed 30min for a loader to fully load.</li>
+      <li>Requires only one loader for it to be fully served.</li>
+    </ul>
+    <p>
+      A schedule entry is read as such:
+      <pre>A1234 0000</pre> denoting that cruise A1234 arrives at 12AM, requires 1 loader and 30 minutes
+      to be fully served.
+    </p>
+  </li>
+  <li>BigCruise:
+    <p>
+      BigCruises have an identifier that starts with the character 'B' (case-sensitive).
+      Furthermore, they have a variable number of loaders and time required to serve it.
+    </p>
+    <ul>
+      <li>Takes T minutes to serve, where T is between 0 to 99.</li>
+      <li>Requires X loaders to fully load, where X is between 0 to 9.</li>
+    </ul>
+    <p>
+      A schedule entry is read as such:
+      <pre>B1234 0000 5 75</pre> denoting that cruise B1234 arrives at 12AM, requires 5 loaders and 75
+      minutes to be fully served.
+    </p>
+  </li>
+</ul>
+
+
+<p>
+  The program determines the number of loaders and the allocation schedule by the 
+  following steps (sub-optimal):
+  <ul>
+    <li>
+      For each cruise, check through the inventory of loaders, starting from the loader 
+      first purchased and so on.
+    </li>
+    <li>The first (or first few) loaders available will be used to serve the cruise.</li>
+    <li>
+      If there are not enough loaders, purchase a new one(s), and that loader(s) will 
+      be used to serve the cruise.</li>
+<!--      
+    <li>Every third loader purchased must be a recycled loader.</li>
+-->    
+  </ul>
+</p>
+
+<h3>Task</h3>
+
+<p>
+  Write a program that reads in the number of cruises in the schedule as an integer, and a list of cruises 
+  that will arrive for that day.
+  <br>
+  <br>
+  The program will output the loader allocation schedule.
+</p>
+
+
+<p>
+  Take note of the following assumptions:
+  <ul>
+    <li>Input cruises are presented chronologically by arrival time.</li>
+	  <li>There can be up to 30 cruises in one day.</li>
+	  <li>There are no duplicates in the input cruises.</li>
+    <li>All cruises will arrive and be completely served within a single day.</li>
+    <li>Input validation is not required and all inputs can be assumed to be correct.</li>
+  </ul>
+</p>
+
+<p>
+  Although this problem can be implemented procedurally, you should learn to model your solution
+  using an object-oriented approach instead.
+</p>
+
+<p>This task is divided into five levels. You need to complete <strong>ALL</strong> levels.</p>
+
+<p><table border=1 cellpadding=10>
+
+<!-- Level 1 -->
+<tr><td><h4>Level 1</h4>
+
+<p>
+  <big><strong>Represent a Cruise</strong></big>
+</p>
+
+<p>
+Design an <b>immutable</b> class <tt>Cruise</tt> that represents a Cruise instance, with a unique identifier string, and the time of arrival as an integer.
+</p>
+<p> 
+Note that the time of arrival is input in HHMM format. Hence, <tt>0</tt> or <tt>0000</tt> refers to 00:00 (12AM),
+<tt>30</tt> or <tt>0030</tt> refers to 00:30 (12:30AM), and <tt>130</tt> or <tt>0130</tt> refers to 01:30 (1:30AM).
+</p>
+
+<p>
+  You are also required to implement a <tt>getServiceCompletionTime</tt> method, which returns the time in minutes
+  of when the service will be completed.
+</p>
+
+<p>
+  For example, if the Cruise arrives at 12PM, the service completion time is 12:30PM, which is 750 minutes from 00:00.
+  (12 * 60) + 30 = 750)
+</p>
+
+<p>
+The String representation of cruises are:<pre>cruiseID@HHMM</pre>The <tt>%0Xd</tt> format specifier might be of use to you,
+where the integer will be represented by an X-digit zero-padded number.
+</p>
+
+<p>
+  For instance, <pre>String.format("%04d", 20)</pre> would return <tt>0020</tt>.
+</p>
+
+<p>
+  <table border=1 width=300>
+  <tr><td><pre>
+jshell> /open Cruise.java
+jshell> new Cruise("A1234", 0)
+$.. ==> A1234@0000
+jshell> new Cruise("A2345", 30)
+$.. ==> A2345@0030
+jshell> new Cruise("A3456", 130)
+$.. ==> A3456@0130
+jshell> new Cruise("A3456", 130).getArrivalTime()
+$.. ==> 90
+jshell> new Cruise("A3456", 130).getNumLoadersRequired()
+$.. ==> 1
+jshell> new Cruise("A1234", 0).getServiceCompletionTime()
+$.. ==> 30
+jshell> new Cruise("CS2030", 1200).getServiceCompletionTime()
+$.. ==> 750
+jshell> new Cruise("D1010", 2329).getServiceCompletionTime()
+$.. ==> 1439
+jshell> /exit
+</pre>
+  </table>
+</p>
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>$ javac *.java
+$ jshell -q &lt; level1.jsh</pre>
+<p>Check your styling by issuing the following<pre>$ checkstyle *.java</pre></p>
+<!-- Level 2 -->
+<tr><td><h4>Level 2</h4>
+
+<p>
+  <big><strong>Use Loaders to serve Cruises</strong></big>
+</p>
+
+<p>
+Design a class <tt>Loader</tt> that is able to serve a <tt>Cruise</tt> using a <tt>Loader serve(Cruise)</tt> method.
+Note the following:
+<ul>
+  <li>
+    The constructor takes in an integer denoting its ID.
+  </li>
+  <li>
+    Loader instances are <b>immutable</b> <!--(though you are not required to make deep copies of any Cruise objects stored, if any). -->
+  </li>
+  <li>
+    If the loader cannot serve a cruise, that loader will not serve the cruise, and returns <tt>null</tt>.
+    </li>
+    <li>
+      The String representation of each Loader is:<br><pre>Loader id serving cruiseid@cruisearrivaltime</pre>
+    </li>
+</ul>
+</p>
+<p><table border=1 width=300>
+<tr><td><pre>
+jshell> /open Cruise.java
+jshell> /open Loader.java
+jshell> new Loader(1)
+$.. ==> Loader 1
+jshell> new Loader(1).serve(new Cruise("A1234", 0))
+$.. ==> Loader 1 serving A1234@0000
+jshell> new Loader(1).serve(new Cruise("A1234", 0)).serve(new Cruise("A2345", 30))
+$.. ==> Loader 1 serving A2345@0030
+jshell> new Loader(2).serve(new Cruise("A1245", 2330))
+$.. ==> Loader 2 serving A1245@2330
+jshell> new Loader(2).serve(new Cruise("A1245", 2330)).serve(new Cruise("A2345", 2359))
+$.. ==> null
+jshell> new Loader(2).serve(new Cruise("A1245", 2330)).serve(new Cruise("A2345", 2359))
+$.. ==> null
+jshell> Cruise c = new Cruise("CS2030", 0)
+jshell> new Loader(3).serve(c)
+$.. ==> Loader 3 serving CS2030@0000
+jshell> new Loader(3).serve(c)
+$.. ==> Loader 3 serving CS2030@0000
+jshell> /exit
+</pre>
+</table>
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>$ javac *.java
+$ jshell -q &lt; level2.jsh</pre>
+
+<p>Check your styling by issuing the following<pre>$ checkstyle *.java</pre></p>
+<tr><td><h4>Level 3</h4>
+
+<p>
+  <big><strong>Represent Big Cruises</strong></big>
+</p>
+
+<p>
+ Design the <tt>BigCruise</tt> class. The arguments of the constructor are its ID, time of arrival, number
+ of loaders required, and time required, in that order.
+</p>
+<p><table border=1 width=300>
+<tr><td><pre>
+jshell> /open Loader.java
+jshell> /open Cruise.java
+jshell> /open BigCruise.java
+jshell> Cruise b = new BigCruise("B0001", 0, 2, 60)
+jshell> b.getArrivalTime()
+$.. ==> 0
+jshell> b.getServiceCompletionTime()
+$.. ==> 60
+jshell> b.getNumLoadersRequired()
+$.. ==> 2
+jshell> new Loader(1).serve(b).serve(b)
+$.. ==> null
+jshell> new Loader(2).serve(b)
+$.. ==> Loader 2 serving B0001@0000
+jshell> new Loader(3).serve(b)
+$.. ==> Loader 3 serving B0001@0000
+jshell> new Loader(4).serve(new BigCruise("B2345", 0, 1, 29)).serve(new Cruise("A0000", 29))
+$.. ==> Loader 4 serving A0000@0029
+jshell> new Loader(5).serve(new BigCruise("B3456", 0, 2, 31)).serve(new Cruise("A2345", 30))
+$.. ==> null
+jshell> /exit
+</pre>
+</table>
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>$ javac *.java
+$ jshell -q &lt; level3.jsh</pre>
+
+<p>Check your styling by issuing the following<pre>$ checkstyle *.java</pre></p>
+<tr><td><h4>Level 4</h4>
+<p>
+  <big><strong>Completing the program</strong></big>
+</p>
+<p>
+  Write a program that reads in the number of cruises that arrive daily, and the daily cruise schedule.<br>
+  Then, print out the allocation schedule for the loaders.
+</p>  
+
+<p>
+By including the functionality of input and output, compile and run the program as follows:
+<pre>$ javac Main.java</pre> where the <tt>Main</tt> class, together with all its dependency classes will be compiled. Then
+<pre>$ java Main</pre> to run the program.</p>
+<p>The following are sample runs of the program.  
+User input is <u>underlined</u>.
+
+<p><table border=1 width=300>
+
+<tr><td><pre>
+$ java Main
+<u>1
+A1111 1300</u>
+Loader 1 serving A1111@1300
+</pre>
+
+<tr><td><pre>
+$ java Main
+<u>4
+B1111 1300 2 60
+A1111 1359
+A1112 1400
+A1113 1429</u>
+Loader 1 serving B1111@1300
+Loader 2 serving B1111@1300
+Loader 3 serving A1111@1359
+Loader 1 serving A1112@1400
+Loader 2 serving A1113@1429
+</pre>
+
+<tr><td><pre>
+$ java Main
+<u>6
+A1111 0900
+B1112 0901 3 1
+B1113 0902 1 90
+C2030 1031
+B0001 1100 1 30
+D0001 1130</u>
+Loader 1 serving A1111@0900
+Loader 2 serving B1112@0901
+Loader 3 serving B1112@0901
+Loader 4 serving B1112@0901
+Loader 2 serving B1113@0902
+Loader 1 serving C2030@1031
+Loader 2 serving B0001@1100
+Loader 1 serving D0001@1130
+</pre>
+
+<tr><td><pre>
+$ java Main
+<u>0</u>
+</pre>
+
+</table>
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>$ java Main < test.in | diff - test.out</pre>
+
+<p>Check your styling by issuing the following<pre>$ checkstyle *.java</pre></p>
+</table>

@@ -1,0 +1,3 @@
+interface SuperRights extends BasicRights {
+    public Card editCardDetails(User user);
+}

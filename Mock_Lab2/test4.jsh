@@ -1,0 +1,8 @@
+List lines = Arrays.asList(new String[]{"one", "two three"})
+Parser.parse(lines).chop(2,2)
+Parser.parse(lines).chop(2,5)
+Parser.parse(lines).grab("e").chop(0,10)
+Parser.parse(lines).grab("e").echo().chop(0,10)
+Parser.parse(lines).chop(30,200)
+Parser.parse(lines).chop(30,200).linecount()
+Parser.parse(lines).chop(30,200).wordcount()

@@ -1,0 +1,69 @@
+|  Welcome to JShell -- Version 11.0.4
+|  For an introduction type: /help intro
+
+jshell> User Thomas = new User("Thomas", 1, new Card(1,10))
+Thomas ==> Username: Thomas (1)
+
+Card Balance: 10.00
+
+jshell> Customer Elise = new Customer("Elise", 2, new Card(2, 30))
+Elise ==> Username: Elise (2)
+
+Card Balance: 30.00
+
+jshell> Admin Dicky = new Admin("Dicky", 3, new Card(3, 30))
+Dicky ==> Username: Dicky (3)
+
+Card Balance: 30.00
+
+jshell> Elise.checkBalance()
+$10 ==> 
+Card Balance: 30.00
+
+jshell> Elise.doTopUp(100)
+$11 ==> Username: Elise (2)
+
+Card Balance: 130.00
+
+jshell> Elise.doTopUp(100)
+$12 ==> Username: Elise (2)
+
+Card Balance: 130.00
+
+jshell> Elise = Elise.doTopUp(100)
+Elise ==> Username: Elise (2)
+
+Card Balance: 130.00
+
+jshell> Elise
+Elise ==> Username: Elise (2)
+
+Card Balance: 130.00
+
+jshell> Elise.rewardEventBonus(Elise, 300)
+|  Error:
+|  cannot find symbol
+|    symbol:   method rewardEventBonus(Customer,int)
+|  Elise.rewardEventBonus(Elise, 300)
+|  ^--------------------^
+
+jshell> Dicky.rewardEventBonus(Elise, 300)
+$15 ==> Username: Elise (2)
+
+Card Balance: 430.00
+
+jshell> Elise
+Elise ==> Username: Elise (2)
+
+Card Balance: 130.00
+
+jshell> Elise = Dicky.rewardEventBonus(Elise, 300)
+Elise ==> Username: Elise (2)
+
+Card Balance: 430.00
+
+jshell> Elise.checkBalance()
+$18 ==> 
+Card Balance: 430.00
+
+jshell> 
